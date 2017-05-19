@@ -21,7 +21,7 @@ app.get('/Greeted', function(req, res){
 
 app.get('/Counter', function(req, res){
   count++;
-  res.send('Greeted'+"" +count+""+"times");
+  res.send("Greeted"+count+"times");
 });
 
 
