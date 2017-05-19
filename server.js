@@ -3,6 +3,7 @@ var express = require('express');
 // const subjectRoutes=SubjectsRoutes();
 var app = express();
 
+var count = 0;
 var greeted=[];
 
 app.get('/', function(req, res){
@@ -15,8 +16,14 @@ app.get('/Greetings/:id', function(req, res){
 });
 
 app.get('/Greeted', function(req, res){
-      res.send(greeted);
+  res.send(greeted);
 });
+
+app.get('/Counter', function(req, res){
+  count++;
+  res.send('Greeted'+"" +count+""+"times");
+});
+
 
 
 const port=8000;
