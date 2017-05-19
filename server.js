@@ -2,7 +2,7 @@ var express = require('express');
 // const SubjectRoutes=require('/subjects');
 // const subjectRoutes=SubjectsRoutes();
 var app = express();
-var storedNames='';
+
 var greeted=[];
 
 app.get('/', function(req, res){
@@ -10,24 +10,18 @@ app.get('/', function(req, res){
 });
 
 app.get('/Greetings/:id', function(req, res){
-  console.log(req.params.id);
-  greeted.push(req);
+  greeted.push({'name':req.params.id});
   res.send("Greetings: " + req.params.id)
 });
 
-
-
-// req.get('/urls/:param_one/url_part2/:param_two', function(req, res){
-//
-//     for(var i=0;i<storedNames.length;i++){
-//       greeted.push(storedNames[i]);
-//     }
-// });
+app.get('/Greeted', function(req, res){
+      res.send(greeted);
+});
 
 
 const port=8000;
 app.listen(port, function(){
-  console.log('web app started on port:'+port);
+console.log('web app started on port:'+port);
 
 });
 
