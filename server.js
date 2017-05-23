@@ -1,4 +1,5 @@
 var express = require('express');
+var greetingsCount = 0;
 
 var app = express();
 var namesGreeted='';
@@ -10,25 +11,34 @@ app.get('/', function(req, res){
 });
 
 app.get('/Greetings/:names', function(req, res){
-  greeted.push({'name':req.params.names});
+  greeted.push(req.params.names);
   res.send("Greetings: " + req.params.names);
 });
 
 app.get('/Greeted', function(req, res){
-  res.send(greeted);
+  var name = req.params.name;
+  var uniqueNames= [];
+
+  for(var i=0;i<greeted.length;i++){
+    if(uniqueNames.indexOf(greeted[i]) ===-1){
+      uniqueNames.push(greeted[i]);
+    //  Greetings[greetedNames]=0;
+  }
+}
+  res.send(uniqueNames);
 });
 
-app.get('/Counter/:name', function(req, res){
-var name = req.params.name;
+
+app.get('/Counter/:names', function(req, res){
+var name = req.params.names;
 var greetingsCount = 0;
 for(var i=0;i<greeted.length;i++){
-  if(greeted[i].name === name){
+  if(greeted[i] === name){
     greetingsCount++;
 }
 
   }
-
-    res.send("Has been greeted" +' '+ greetingsCount +' ' +"times");
+  res.send("Has been greeted" +' '+ greetingsCount +' ' +"time(s)");
 
 });
 
