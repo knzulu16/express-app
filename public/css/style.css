@@ -25,3 +25,8 @@ text-align: center;
     margin-bottom: auto;
     height: 20%;
 }
+#counter{
+  height: 5em;
+  width: 10em;
+  background-color: yellow;
+}

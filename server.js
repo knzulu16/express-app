@@ -1,3 +1,4 @@
+
 var express = require('express');
 var exphbs = require('express-handlebars');
 var bodyParser = require('body-parser');
@@ -53,9 +54,16 @@ console.log(greeted);
   }
 });
 
+
 app.get('/Greeted',function(req, res){
-res.render('index.form.handlebars');
+res.render('index.form.handlebars',{names:greeted});
 });
+
+// app.get('/greeted', function(req, res) {
+//   res.render("greeted.handlebars",{
+//     greeted
+//   });
+
 
 app.post('/Greeted',function(req,res){
   var name=req.body.view;
@@ -64,10 +72,12 @@ app.post('/Greeted',function(req,res){
     if(uniqueNames.indexOf(greeted[i])===-1){
       uniqueNames.push(greeted[i]);
     }
+    console.log(uniqueNames);
+    res.render('index.handlebars',{
+      output:uniqueNames
+    });
   }
-  res.render('index',{
-    msg:uniqueNames
-  });
+
 });
 
 // app.post('/Greetings', function(req, res) {
@@ -93,19 +103,24 @@ app.post('/Greeted',function(req,res){
 //   }
 //   res.send(uniqueNames);
 // });
+app.get('/Counter',function(req, res){
+res.render('index.handlebars',{names:greeted});
+});
 
 
-app.get('/Counter/:names', function(req, res) {
-  var name = req.params.names;
-  var greetingsCount = 0;
+app.post('/Counter/:names', function(req, res) {
+  var name = req.body.names;
   for (var i = 0; i < greeted.length; i++) {
     if (greeted[i] === name) {
       greetingsCount++;
     }
 
+    res.render("index",{
+      count:uniqueNames
+    });
   }
-  res.send("Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)");
-
+//   "Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)";
+//
 });
 
 const port = 8000;
