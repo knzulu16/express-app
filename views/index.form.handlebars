@@ -1,15 +1,14 @@
-
 <div>
-<form action='Greeted' method='post'>
-<button type='view' name="peopleGreeted" value='greet'>Back</button>
-{{#each names}}
-  <div class="names">
-    {{this}}
-  </div>
-{{/each}}
+  <form action='Greetings' method='post'>
+    <button type='view' name="peopleGreeted" value='greet'>Back</button>
+    {{#each names}}
+      <div class="names">
+        {{this}}
+      </div>
+    {{/each}}
 
-<div id='listOfNames'>
-  {{output}}
-</div>
-</form>
+    <div id='listOfNames'>
+
+    </div>
+  </form>
 </div>

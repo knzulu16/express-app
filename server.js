@@ -1,11 +1,11 @@
-
+"use strict";
 var express = require('express');
 var exphbs = require('express-handlebars');
 var bodyParser = require('body-parser');
 var app = express();
 
 var greetingsCount = 0;
-var namesGreeted = '';
+var namesGreeted = {};
 
 
 app.engine('handlebars', exphbs({
@@ -33,25 +33,55 @@ app.get('/Greetings', function(req, res) {
 app.post('/Greetings', function(req, res){
   var name = req.body.person;
   var language = req.body.language;
+
   greeted.push(name);
-console.log(name);
-console.log(language);
-console.log(greeted);
+
   if (language === 'IsiXhosa') {
+    greetingsCount++;
     res.render('index', {
-      msg: 'Molo ' + name
-    });
+      msg: 'Molo ' + name,
+      output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
 
-  } else if (language === 'English') {
-    res.render('index', {
-      msg: 'Hello ' + name
 
     });
-  } else if (language === 'Afrikaans') {
-    res.render('index', {
-      msg: "Goeie dag " + name
+
+  } else if (language === 'English'){
+    greetingsCount++;
+    res.render('index',{
+      msg: 'Hello ' + name,
+      output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
+
     });
-  }
+  } else if (language === 'Afrikaans'){
+    greetingsCount++;
+    res.render('index', {
+      msg: "Goeie dag " + name,
+      output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
+    });
+}else if
+(namesGreeted[name]==undefined){
+  greetingsCount++;
+  res.render("index",{
+    output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
+
+  });
+
+
+}
+
+//     for (var i = 0; i < greeted.length; i++){
+//       if (greeted[i] === name){
+//         greetingsCount++;
+//         console.log(greetingsCount);
+//
+//       res.render("index",{
+//         output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
+//
+//       });
+//     }
+// }
+
+
 });
 
 
@@ -108,19 +138,9 @@ res.render('index.handlebars',{names:greeted});
 });
 
 
-app.post('/Counter/:names', function(req, res) {
-  var name = req.body.names;
-  for (var i = 0; i < greeted.length; i++) {
-    if (greeted[i] === name) {
-      greetingsCount++;
-    }
+app.post('/Counter/:names', function(req, res){
 
-    res.render("index",{
-      count:uniqueNames
-    });
-  }
-//   "Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)";
-//
+
 });
 
 const port = 8000;
