@@ -7,5 +7,10 @@
     "test": "mocha"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "express-handlebars": "^3.0.0"
+  }
 }

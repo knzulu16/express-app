@@ -143,7 +143,7 @@ app.post('/Counter/:names', function(req, res){
 
 });
 
-const port = 8000;
+const port = process.env.PORT || 8000;
 app.listen(port, function() {
   console.log('web app started on port:' + port);
 
