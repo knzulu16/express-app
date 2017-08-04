@@ -1,12 +1,15 @@
 "use strict";
 var express = require('express');
 var exphbs = require('express-handlebars');
+
 var bodyParser = require('body-parser');
 var app = express();
+var mongoose=require('mongoose');
+var Schema=mongoose.Schema;
 
 var greetingsCount = 0;
 var namesGreeted = {};
-
+var access=require('./mangoose');
 
 app.engine('handlebars', exphbs({
   defaultLayout: 'main'
@@ -14,12 +17,26 @@ app.engine('handlebars', exphbs({
 app.set('view engine', 'handlebars');
 
 app.use(express.static(__dirname + '/public'));
-var mongoose=require('mongoose');
+
+const mongoURL = process.env.MONGO_DB_URL || "'mongodb://localhost/Greetings'";
+
+mongoose.connect(mongoURL);
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
+function storing(nameParam,countParam){
+  var takesNames=new access.storeData({
+    greetingsCount:countParam,
+    name:nameParam
+  });
+  takesNames.save(function(err){
+    if(err){
+      return err;
+    }
+  })
+}
 
 var greeted = [];
 
@@ -36,8 +53,9 @@ app.post('/Greetings', function(req, res){
 
   greeted.push(name);
 
-  if (language === 'IsiXhosa') {
+  if (language === 'IsiXhosa'){
     greetingsCount++;
+    storing(name,greetingsCount);
     res.render('index', {
       msg: 'Molo ' + name,
       output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
@@ -47,25 +65,29 @@ app.post('/Greetings', function(req, res){
 
   } else if (language === 'English'){
     greetingsCount++;
+    storing(name,greetingsCount);
     res.render('index',{
       msg: 'Hello ' + name,
       output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
 
     });
+
   } else if (language === 'Afrikaans'){
     greetingsCount++;
+    storing(name,greetingsCount);
     res.render('index', {
       msg: "Goeie dag " + name,
       output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
     });
+
 }else if
 (namesGreeted[name]==undefined){
   greetingsCount++;
+  storing(name,greetingsCount);
   res.render("index",{
     output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
 
   });
-
 
 }
 
