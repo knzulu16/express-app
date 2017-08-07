@@ -38,6 +38,7 @@ function storing(nameParam,countParam){
   })
 }
 
+
 var greeted = [];
 
 app.get('/Greetings', function(req, res) {

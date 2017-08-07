@@ -8,8 +8,12 @@ form{
   margin: 25px;
   margin-right: 50%;
 text-align: center;
+margin-top: 10em;
+margin-left:25em;
+color:yellow;
 
 }
+
 
 #greeted{
     background-color: #000000;
@@ -24,9 +28,16 @@ text-align: center;
     cursor: pointer;
     margin-bottom: auto;
     height: 20%;
+    color: yellow;
 }
 #counter{
   height: 5em;
   width: 10em;
-  background-color: yellow;
+  background-color:#5d4c45;
+}
+h1{
+  font-family: Lobster;
+  text-align: center;
+  font-size: 6em;
+  color: yellow;
 }
