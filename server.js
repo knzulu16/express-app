@@ -41,6 +41,10 @@ function storing(nameParam,countParam){
 
 var greeted = [];
 
+
+
+
+
 app.get('/Greetings', function(req, res) {
   res.render('index');
 
@@ -87,11 +91,18 @@ app.post('/Greetings', function(req, res){
   storing(name,greetingsCount);
   res.render("index",{
     output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
-
   });
-
 }
 
+for (var i = 0; i < greeted.length; i++){
+  var greet=greeted[i];
+  namesGreeted[greet]=namesGreeted[greet] ? namesGreeted[greet]:1;
+
+}
+greetingsCount=0;
+for (var key in namesGreeted){
+  greetingsCount++;
+}
 //     for (var i = 0; i < greeted.length; i++){
 //       if (greeted[i] === name){
 //         greetingsCount++;
