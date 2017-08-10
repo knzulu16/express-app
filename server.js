@@ -4,12 +4,12 @@ var exphbs = require('express-handlebars');
 
 var bodyParser = require('body-parser');
 var app = express();
-var mongoose=require('mongoose');
-var Schema=mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var greetingsCount = 0;
+// var greetingsCount = 0;
 var namesGreeted = {};
-var access=require('./mangoose');
+var access = require('./mangoose');
 
 app.engine('handlebars', exphbs({
   defaultLayout: 'main'
@@ -22,20 +22,19 @@ const mongoURL = process.env.MONGO_DB_URL || "'mongodb://localhost/Greetings'";
 
 mongoose.connect(mongoURL);
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({
+  extended: false
+}))
 
 // parse application/json
 app.use(bodyParser.json())
-function storing(nameParam,countParam){
-  var takesNames=new access.storeData({
-    greetingsCount:countParam,
-    name:nameParam
+
+function storing(nameParam, cb) {
+  var takesNames = new access.storeData({
+    name: nameParam,
+    greetingsCount: 1
   });
-  takesNames.save(function(err){
-    if(err){
-      return err;
-    }
-  })
+  takesNames.save(cb)
 }
 
 
@@ -52,75 +51,66 @@ app.get('/Greetings', function(req, res) {
 
 
 
-app.post('/Greetings', function(req, res){
+app.post('/Greetings', function(req, res) {
   var name = req.body.person;
   var language = req.body.language;
-
+  var greetNames = "";
   greeted.push(name);
 
-  if (language === 'IsiXhosa'){
-    greetingsCount++;
-    storing(name,greetingsCount);
-    res.render('index', {
-      msg: 'Molo ' + name,
-      output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
+  if (language === 'IsiXhosa') {
+    // greetingsCount++;
+    // storing(name,greetingsCount);
+    // res.render('index', {
+    greetNames = 'Molo ' + name
+    // output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
+
+    //
+    // });
+
+  } else if (language === 'English') {
+    // greetingsCount++;
+    // storing(name,greetingsCount);
+    // res.render('index',{
+    greetNames = 'Hello ' + name
+    // output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
+
+    // });
+
+  } else if (language === 'Afrikaans') {
+    // greetingsCount++;
+    // storing(name,greetingsCount);
+    // res.render('index', {
+    greetNames = "Goeie dag " + name
+    // output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
+  }
+
+  console.log(greetNames);
+
+  // });
 
 
+  // var count= function(req, res){
+  storing(name, function() {
+    access.storeData.count({}, function(err, greetingsCount) {
+      if (err) {
+        return err;
+      } else {
+        res.render('index', {
+          output: greetingsCount,
+          msg: greetNames
+
+        })
+      }
     });
 
-  } else if (language === 'English'){
-    greetingsCount++;
-    storing(name,greetingsCount);
-    res.render('index',{
-      msg: 'Hello ' + name,
-      output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
+  })
 
-    });
+})
 
-  } else if (language === 'Afrikaans'){
-    greetingsCount++;
-    storing(name,greetingsCount);
-    res.render('index', {
-      msg: "Goeie dag " + name,
-      output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
-    });
-
-}else if
-(namesGreeted[name]==undefined){
-  greetingsCount++;
-  storing(name,greetingsCount);
-  res.render("index",{
-    output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
+app.get('/Greeted', function(req, res) {
+  res.render('index.form.handlebars', {
+    names: greeted
   });
-}
-
-for (var i = 0; i < greeted.length; i++){
-  var greet=greeted[i];
-  namesGreeted[greet]=namesGreeted[greet] ? namesGreeted[greet]:1;
-
-}
-greetingsCount=0;
-for (var key in namesGreeted){
-  greetingsCount++;
-}
-//     for (var i = 0; i < greeted.length; i++){
-//       if (greeted[i] === name){
-//         greetingsCount++;
-//         console.log(greetingsCount);
-//
-//       res.render("index",{
-//         output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
-//
-//       });
-//     }
-// }
-
-
-});
-
-
-app.get('/Greeted',function(req, res){
-res.render('index.form.handlebars',{names:greeted});
 });
 
 // app.get('/greeted', function(req, res) {
@@ -129,20 +119,20 @@ res.render('index.form.handlebars',{names:greeted});
 //   });
 
 
-app.post('/Greeted',function(req,res){
-  var name=req.body.view;
-  var uniqueNames=[];
-  for(var i=0;i<greeted.length;i++){
-    if(uniqueNames.indexOf(greeted[i])===-1){
-      uniqueNames.push(greeted[i]);
-    }
-    console.log(uniqueNames);
-    res.render('index.handlebars',{
-      output:uniqueNames
-    });
-  }
-
-});
+// app.post('/Greeted',function(req,res){
+//   var name=req.body.view;
+//   var uniqueNames=[];
+//   for(var i=0;i<greeted.length;i++){
+//     if(uniqueNames.indexOf(greeted[i])===-1){
+//       uniqueNames.push(greeted[i]);
+//     }
+//     console.log(uniqueNames);
+//     res.render('index.handlebars',{
+//       output:uniqueNames
+//     });
+//   }
+//
+// });
 
 // app.post('/Greetings', function(req, res) {
 //   res.render('index', {
@@ -167,12 +157,14 @@ app.post('/Greeted',function(req,res){
 //   }
 //   res.send(uniqueNames);
 // });
-app.get('/Counter',function(req, res){
-res.render('index.handlebars',{names:greeted});
+app.get('/Counter', function(req, res) {
+  res.render('index.handlebars', {
+    names: greeted
+  });
 });
 
 
-app.post('/Counter/:names', function(req, res){
+app.post('/Counter/:names', function(req, res) {
 
 
 });
