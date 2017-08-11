@@ -65,15 +65,15 @@ app.post('/Greetings', function(req, res) {
 
   } else if (language === 'Afrikaans') {
     greetNames = "Goeie dag " + name
-
+    // output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
   }
 
   console.log(greetNames);
 
+  // });
 
 
-
-
+  // var count= function(req, res){
   storing(name, function() {
     access.storeData.count({}, function(err, greetingsCount) {
       if (err) {
