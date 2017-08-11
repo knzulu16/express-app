@@ -18,7 +18,7 @@ app.set('view engine', 'handlebars');
 
 app.use(express.static(__dirname + '/public'));
 
-const mongoURL = process.env.MONGO_DB_URL || "mongodb://<knzulu16>:<Kala@1986>@ds117093.mlab.com:17093/greetings";
+const mongoURL = process.env.MONGO_DB_URL || "mongodb://localhost/greetings";
 
 mongoose.connect(mongoURL);
 // parse application/x-www-form-urlencoded
@@ -34,6 +34,7 @@ function storing(nameParam, cb) {
     name: nameParam,
     greetingsCount: 1
   });
+  console.log("saving");
   takesNames.save(cb)
 }
 
@@ -77,18 +78,21 @@ app.post('/Greetings', function(req, res,next) {
 
   // var count= function(req, res){
   storing(name, function(err) {
+
+    console.log("storing...");
+
     if (err) {
       return next(err);
     }
 
     access.storeData.count({}, function(err, greetingsCount) {
+      console.log("counting...");
       if (err) {
         return next(err);
       } else {
         res.render('index', {
           output: greetingsCount,
           msg: greetNames
-
         })
       }
     });
