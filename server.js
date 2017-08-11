@@ -53,7 +53,7 @@ app.get('/Greetings', function(req,res){
   res.redirect('index');
 });
 
-app.post('/Greetings', function(req, res) {
+app.post('/Greetings', function(req, res,next) {
   var name = req.body.person;
   var language = req.body.language;
   var greetNames = "";
@@ -76,10 +76,14 @@ app.post('/Greetings', function(req, res) {
 
 
   // var count= function(req, res){
-  storing(name, function() {
+  storing(name, function(err) {
+    if (err) {
+      return next(err);
+    }
+
     access.storeData.count({}, function(err, greetingsCount) {
       if (err) {
-        return err;
+        return next(err);
       } else {
         res.render('index', {
           output: greetingsCount,
@@ -154,7 +158,10 @@ app.post('/Counter/:names', function(req, res) {
 
 
 });
-
+app.use(function (err, req, res, next) {
+  console.error(err.stack)
+  res.status(500).send(err.stack)
+})
 const port = process.env.PORT || 8000;
 app.listen(port, function() {
   console.log('web app started on port:' + port);
