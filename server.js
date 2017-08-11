@@ -49,10 +49,7 @@ app.get('/Greetings', function(req, res) {
 
 });
 
-app.get('/Greetings', function(req, res) {
-  res.redirect('index');
 
-});
 
 app.post('/Greetings', function(req, res) {
   var name = req.body.person;
