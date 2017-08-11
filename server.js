@@ -41,9 +41,7 @@ function storing(nameParam, cb) {
 var greeted = [];
 
 
-app.get('/', function(req,res){
-  res.redirect('/Greetings');
-})
+
 
 
 app.get('/Greetings', function(req, res) {
@@ -51,7 +49,10 @@ app.get('/Greetings', function(req, res) {
 
 });
 
+app.get('/Greetings', function(req, res) {
+  res.redirect('index');
 
+});
 
 app.post('/Greetings', function(req, res) {
   var name = req.body.person;
@@ -86,9 +87,6 @@ app.post('/Greetings', function(req, res) {
           msg: greetNames
 
         })
-
-       res.redirect('/Greetings')
-      
       }
     });
 
