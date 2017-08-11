@@ -41,7 +41,9 @@ function storing(nameParam, cb) {
 var greeted = [];
 
 
-
+app.get('/', function(req,res){
+  res.redirect('/Greetings');
+})
 
 
 app.get('/Greetings', function(req, res) {
