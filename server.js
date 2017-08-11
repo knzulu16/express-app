@@ -81,7 +81,7 @@ app.post('/Greetings', function(req, res) {
       if (err) {
         return err;
       } else {
-        res.redirect('index', {
+        res.render('index', {
           output: greetingsCount,
           msg: greetNames
 
