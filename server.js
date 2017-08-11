@@ -86,6 +86,14 @@ app.post('/Greetings', function(req, res) {
           msg: greetNames
 
         })
+        app.get('/Greetings', function(req, res) {
+          res.redirect('index',{
+            output: greetingsCount,
+            msg: greetNames
+
+          });
+
+        });
       }
     });
 
