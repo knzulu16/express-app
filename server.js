@@ -58,38 +58,22 @@ app.post('/Greetings', function(req, res) {
   greeted.push(name);
 
   if (language === 'IsiXhosa') {
-    // greetingsCount++;
-    // storing(name,greetingsCount);
-    // res.render('index', {
     greetNames = 'Molo ' + name
-    // output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
-
-    //
-    // });
 
   } else if (language === 'English') {
-    // greetingsCount++;
-    // storing(name,greetingsCount);
-    // res.render('index',{
     greetNames = 'Hello ' + name
-    // output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
-
-    // });
 
   } else if (language === 'Afrikaans') {
-    // greetingsCount++;
-    // storing(name,greetingsCount);
-    // res.render('index', {
     greetNames = "Goeie dag " + name
-    // output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
+
   }
 
   console.log(greetNames);
 
-  // });
 
 
-  // var count= function(req, res){
+
+
   storing(name, function() {
     access.storeData.count({}, function(err, greetingsCount) {
       if (err) {
