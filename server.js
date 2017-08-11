@@ -18,7 +18,7 @@ app.set('view engine', 'handlebars');
 
 app.use(express.static(__dirname + '/public'));
 
-const mongoURL = process.env.MONGO_DB_URL || "'mongodb://localhost/Greetings'";
+const mongoURL = process.env.MONGO_DB_URL || "mongodb://<knzulu16>:<Kala@1986>@ds117093.mlab.com:17093/greetings";
 
 mongoose.connect(mongoURL);
 // parse application/x-www-form-urlencoded
@@ -49,7 +49,9 @@ app.get('/Greetings', function(req, res) {
 
 });
 
-
+app.get('/Greetings', function(req,res){
+  res.redirect('index');
+});
 
 app.post('/Greetings', function(req, res) {
   var name = req.body.person;
