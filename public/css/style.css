@@ -17,6 +17,9 @@ button{
   color:yellow;
   background-color: #455d4c;
 }
+.error{
+  color:red;
+}
 
 #greeted{
     background-color: #000000;
