@@ -47,7 +47,7 @@ access.storeData.findOne({
     return err;
   }
 
-  if(results) {
+  else if(results) {
     results.greetingsCount= results.greetingsCount+1;
     results.save(cb);
     console.log('Update');
@@ -65,6 +65,9 @@ else {
     // console.log("saving...");
   }
 
+// access.storeData.remove({
+//   greetingsCount:0
+// })
 
 })
 

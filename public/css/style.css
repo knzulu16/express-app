@@ -37,9 +37,12 @@ button{
     color: yellow;
 }
 #counter{
-  height: 5em;
-  width: 10em;
+  height: 2em;
+  width: 4em;
   background-color:#5d4c45;
+}
+.reset{
+  margin-right:36em;
 }
 h1{
   font-family: Lobster;
