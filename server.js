@@ -40,14 +40,37 @@ app.use(bodyParser.json())
 
 function storing(nameParam, cb) {
 
-  var takesNames = new access.storeData({
-    name: nameParam,
-    greetingsCount: 1
-  });
-  console.log("saving");
-  takesNames.save(cb);
-  console.log("saving...");
+access.storeData.findOne({
+  name:nameParam
+}, function(err,results){
+  if(err){
+    return err;
+  }
+
+  if(results) {
+    results.greetingsCount= results.greetingsCount+1;
+    results.save(cb);
+    console.log('Update');
+
+  }
+
+else {
+
+    var takesNames = new access.storeData({
+      name: nameParam,
+      greetingsCount: 1
+    });
+    takesNames.save(cb);
+    console.log("takesNames", takesNames);
+    // console.log("saving...");
+  }
+
+
+})
+
+
 }
+
 
 var greeted = [];
 
@@ -70,8 +93,16 @@ app.post('/Greetings', function(req, res, next) {
   var greetNames = "";
   greeted.push(name);
 
-
-
+  if(!name){
+     req.flash('error', 'name should not be blank');
+   }
+   else if(language==undefined){
+     req.flash('error','language is not selected');
+   }
+   else
+     {
+       req.flash('error', 'name already exists');
+     }
 
  if(language === 'IsiXhosa') {
     greetNames = 'Molo ' + name
@@ -114,24 +145,9 @@ app.post('/Greetings', function(req, res, next) {
   })
 
 
-  if(!name){
-      req.flash('error', 'name should not be blank');
-    }
-    else if(language==undefined){
-      req.flash('error','language is not selected');
-    }
 
 
-    // var samename=greeted.findOne(function(availName){
-    //   return availName==name;
-    //  if(name && !samename){
-    //   greeted.push(name);
-    // }
-    //   else
-    //     {
-    //     req.flash('error', 'name already exists');
-    //   }
-    // });
+
 
 });
 
