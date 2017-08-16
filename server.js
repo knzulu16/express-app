@@ -10,7 +10,7 @@ var Schema = mongoose.Schema;
 
 // var greetingsCount = 0;
 var namesGreeted = {};
-var access = require('./mangoose');
+var access = require('./mongoose');
 
 app.engine('handlebars', exphbs({
   defaultLayout: 'main'
