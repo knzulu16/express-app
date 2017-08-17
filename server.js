@@ -1,8 +1,8 @@
 "use strict";
 var express = require('express');
 var exphbs = require('express-handlebars');
-const flash=require('express-flash');
-const session=require("express-session");
+const flash = require('express-flash');
+const session = require("express-session");
 var bodyParser = require('body-parser');
 var app = express();
 var mongoose = require('mongoose');
@@ -20,7 +20,7 @@ app.set('view engine', 'handlebars');
 app.use(express.static(__dirname + '/public'));
 
 const mongoURL = process.env.MONGO_DB_URL || "mongodb://localhost/Greetings";
-// mongoose.connect(mongoURL);
+mongoose.connect(mongoURL);
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
@@ -29,7 +29,12 @@ app.use(bodyParser.urlencoded({
 
 
 
-app.use(session({secret:'keyboard cat',cookie:{maxAge:60000*30}}));
+app.use(session({
+  secret: 'keyboard cat',
+  cookie: {
+    maxAge: 60000 * 30
+  }
+}));
 app.use(flash());
 // parse application/json
 app.use(bodyParser.json())
@@ -40,36 +45,32 @@ app.use(bodyParser.json())
 
 function storing(nameParam, cb) {
 
-access.storeData.findOne({
-  name:nameParam
-}, function(err,results){
-  if(err){
-    return err;
-  }
+  access.storeData.findOne({
+    name: nameParam
+  }, function(err, results) {
+    if (err) {
+      return err;
+    } else if (results) {
+      results.greetingsCount = results.greetingsCount + 1;
+      results.save(cb);
+      console.log('Update');
 
-  else if(results) {
-    results.greetingsCount= results.greetingsCount+1;
-    results.save(cb);
-    console.log('Update');
+    } else {
 
-  }
+      var takesNames = new access.storeData({
+        name: nameParam,
+        greetingsCount: 1
+      });
+      takesNames.save(cb);
+      console.log("takesNames", takesNames);
+      // console.log("saving...");
+    }
 
-else {
+    access.storeData.remove({
+      greetingsCount: 0
+    })
 
-    var takesNames = new access.storeData({
-      name: nameParam,
-      greetingsCount: 1
-    });
-    takesNames.save(cb);
-    console.log("takesNames", takesNames);
-    // console.log("saving...");
-  }
-
-// access.storeData.remove({
-//   greetingsCount:0
-// })
-
-})
+  })
 
 
 }
@@ -96,18 +97,15 @@ app.post('/Greetings', function(req, res, next) {
   var greetNames = "";
   greeted.push(name);
 
-  if(!name){
-     req.flash('error', 'name should not be blank');
-   }
-   else if(language==undefined){
-     req.flash('error','language is not selected');
-   }
-   else
-     {
-       req.flash('error', 'name already exists');
-     }
+  if (!name) {
+    req.flash('error', 'name should not be blank');
+  } else if (language == undefined) {
+    req.flash('error', 'language is not selected');
+  } else {
+    req.flash('error', 'name already exists');
+  }
 
- if(language === 'IsiXhosa') {
+  if (language === 'IsiXhosa') {
     greetNames = 'Molo ' + name
 
   } else if (language === 'English') {
@@ -133,11 +131,11 @@ app.post('/Greetings', function(req, res, next) {
       return next(err);
     }
 
-    access.storeData.count({}, function(err, greetingsCount){
+    access.storeData.count({}, function(err, greetingsCount) {
       console.log("counting...");
-      if (err){
+      if (err) {
         return next(err);
-      } else{
+      } else {
         res.render('index', {
           output: greetingsCount,
           msg: greetNames
@@ -155,11 +153,18 @@ app.post('/Greetings', function(req, res, next) {
 });
 
 app.get('/Greeted', function(req, res) {
-  res.render('index.form.handlebars', {
-    names: greeted
-  });
-});
+  var name = req.body.name;
+  var uniqueNames= [];
 
+  for(var i=0;i<greeted.length;i++){
+    if(uniqueNames.indexOf(greeted[i]) ===-1){
+      uniqueNames.push(greeted[i]);
+  res.render('index.form.handlebars', {
+    names: uniqueNames
+  });
+};
+};
+});
 // app.get('/greeted', function(req, res) {
 //   res.render("greeted.handlebars",{
 //     greeted
@@ -167,26 +172,29 @@ app.get('/Greeted', function(req, res) {
 
 
 
-app.get('/Counter', function(req, res) {
+// app.get('/Counter', function(req, res) {
+//
+//   res.render('index.handlebars', {
+//     names: greeted
+//   });
+// });
 
-  res.render('index.handlebars', {
-    names: greeted
-  });
-});
 
-
-app.post('/Counter/:names', function(req, res) {
+app.get('/Counter/:names', function(req, res) {
   var name = req.params.names;
   var greetingsCount = 0;
-  for(var i=0;i<greeted.length;i++){
-    if(greeted[i] === name){
+  for (var i = 0; i < greeted.length; i++) {
+    if (greeted[i] === name){
       greetingsCount++;
-  }
-
     }
-    res.send("Has been greeted" +' '+ greetingsCount +' ' +"time(s)");
 
-  });
+  }
+  res.render('index.form.handlebars', {
+    names: name
+});
+// "Has been greeted" +' '+ greetingsCount +' ' +"time(s)";
+});
+
 
 app.use(function(err, req, res, next) {
   console.error(err.stack)
