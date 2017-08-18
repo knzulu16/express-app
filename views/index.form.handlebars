@@ -1,13 +1,15 @@
-<div>
-  <form action='Greetings' method='post'>
-    <button type='view' name="peopleGreeted" value='greet'>Back</button>
-    {{#each names}}
-      <div class="names">
-        <a href="/Counter/{{this}}" >{{this}}</a>
-      </div>
-    {{/each}}
-    <div id='listOfNames'>
+<form action="/Greetings" method="post">
 
-    </div>
-  </form>
+<button type='view' name="peopleGreeted" value='greet'>Back</button>
+{{#each names}}
+<div class="names">
+  <a href="/Counter/{{this.name}}" >{{this.name}}</a>
 </div>
+{{/each}}
+<div id='listOfNames'>
+
+</div>
+
+
+
+</form>

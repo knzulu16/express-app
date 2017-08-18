@@ -49,7 +49,7 @@ function storing(nameParam, cb) {
     name: nameParam
   }, function(err, results) {
     if (err) {
-      return err;
+      return cb(err);
     } else if (results) {
       results.greetingsCount = results.greetingsCount + 1;
       results.save(cb);
@@ -91,19 +91,19 @@ app.get('/Greetings', function(req, res) {
   res.redirect('index');
 });
 
+var greetNames = "";
 app.post('/Greetings', function(req, res, next) {
   var name = req.body.person;
   var language = req.body.language;
-  var greetNames = "";
   greeted.push(name);
 
-  if (!name) {
-    req.flash('error', 'name should not be blank');
-  } else if (language == undefined) {
-    req.flash('error', 'language is not selected');
-  } else {
-    req.flash('error', 'name already exists');
-  }
+  // if (!name) {
+  //   req.flash('error', 'name should not be blank');
+  // } else if (language == undefined) {
+  //   req.flash('error', 'language is not selected');
+  // } else {
+  //   req.flash('error', 'name already exists');
+  // }
 
   if (language === 'IsiXhosa') {
     greetNames = 'Molo ' + name
@@ -113,16 +113,13 @@ app.post('/Greetings', function(req, res, next) {
 
   } else if (language === 'Afrikaans') {
     greetNames = "Goeie dag " + name
-    // output:"Has been greeted" + ' ' + greetingsCount + ' ' + "time(s)"
+
   }
 
 
   console.log(greetNames);
 
-  // });
 
-
-  // var count= function(req, res){
   storing(name, function(err) {
 
     console.log("storing...");
@@ -151,49 +148,67 @@ app.post('/Greetings', function(req, res, next) {
 
 
 });
-
 app.get('/Greeted', function(req, res) {
-  var name = req.body.name;
-  var uniqueNames= [];
+  // var name = req.body.names;
 
-  for(var i=0;i<greeted.length;i++){
-    if(uniqueNames.indexOf(greeted[i]) ===-1){
-      uniqueNames.push(greeted[i]);
-  res.render('index.form.handlebars', {
-    names: uniqueNames
-  });
-};
-};
-});
-// app.get('/greeted', function(req, res) {
-//   res.render("greeted.handlebars",{
-//     greeted
-//   });
-
-
-
-// app.get('/Counter', function(req, res) {
-//
-//   res.render('index.handlebars', {
-//     names: greeted
-//   });
-// });
-
-
-app.get('/Counter/:names', function(req, res) {
-  var name = req.params.names;
-  var greetingsCount = 0;
-  for (var i = 0; i < greeted.length; i++) {
-    if (greeted[i] === name){
-      greetingsCount++;
+  access.storeData.find({}, function(err, results) {
+    if (err) {
+      return err;
+    }
+   else {
+      res.render('index.form.handlebars', {
+        names: results
+      })
     }
 
-  }
-  res.render('index.form.handlebars', {
-    names: name
+
+  });
 });
-// "Has been greeted" +' '+ greetingsCount +' ' +"time(s)";
+
+
+
+
+app.get('/Counter/:person', function(req, res) {
+var name = req.params.person;
+  access.storeData.findOne({
+    name:name
+  }, function(err, results) {
+    if (err) {
+      return err;
+
+    }else {
+      console.log(results.name);
+      res.render('index.counter.handlebars', {
+
+        names: req.params.person+''+"has been greeted"+''+results.greetingsCount+''+"time(s)"
+      });
+
+    }
+
+
+
 });
+});
+
+
+app.post('/Reset',function(req, res){
+  access.storeData.remove({},function(err,remove){
+    if(err){
+      return err;
+    }else{
+      remove.greetingsCount;
+    }
+      res.render('index',{
+
+      });
+
+    });
+  });
+
+
+
+
+
 
 
 app.use(function(err, req, res, next) {

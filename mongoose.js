@@ -1,4 +1,6 @@
 var mongoose=require('mongoose');
+var Schema = mongoose.Schema;
+
 mongoose.connect("mongodb://localhost/Greetings",
 {
   useMongoClient:true
@@ -6,5 +8,8 @@ mongoose.connect("mongodb://localhost/Greetings",
 
 exports.storeData=mongoose.model('storeData',{
   greetingsCount:Number,
-  name:String
+  name: {
+    type:String,
+    unique:true
+  }
 });
