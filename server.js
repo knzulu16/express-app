@@ -42,13 +42,14 @@ app.use(bodyParser.json())
 
 
 
-
+// storing and increamenting names in the database
 function storing(nameParam, cb) {
 
   access.storeData.findOne({
     name: nameParam
   }, function(err, results) {
     if (err) {
+      req.flash('error','name already exits!');
       return cb(err);
     } else if (results) {
       results.greetingsCount = results.greetingsCount + 1;
@@ -63,12 +64,10 @@ function storing(nameParam, cb) {
       });
       takesNames.save(cb);
       console.log("takesNames", takesNames);
-      // console.log("saving...");
+
     }
 
-    access.storeData.remove({
-      greetingsCount: 0
-    })
+
 
   })
 
@@ -97,13 +96,11 @@ app.post('/Greetings', function(req, res, next) {
   var language = req.body.language;
   greeted.push(name);
 
-  // if (!name) {
-  //   req.flash('error', 'name should not be blank');
-  // } else if (language == undefined) {
-  //   req.flash('error', 'language is not selected');
-  // } else {
-  //   req.flash('error', 'name already exists');
-  // }
+  if (!name) {
+    req.flash('error', 'name should not be blank');
+  } if (language == undefined) {
+    req.flash('error', 'language is not selected');
+  }
 
   if (language === 'IsiXhosa') {
     greetNames = 'Molo ' + name
@@ -119,7 +116,7 @@ app.post('/Greetings', function(req, res, next) {
 
   console.log(greetNames);
 
-
+// calling the function that stores names
   storing(name, function(err) {
 
     console.log("storing...");
@@ -127,7 +124,7 @@ app.post('/Greetings', function(req, res, next) {
     if (err) {
       return next(err);
     }
-
+// displays and counts
     access.storeData.count({}, function(err, greetingsCount) {
       console.log("counting...");
       if (err) {
@@ -150,7 +147,7 @@ app.post('/Greetings', function(req, res, next) {
 });
 app.get('/Greeted', function(req, res) {
   // var name = req.body.names;
-
+// avoid duplication by using find
   access.storeData.find({}, function(err, results) {
     if (err) {
       return err;
@@ -167,20 +164,20 @@ app.get('/Greeted', function(req, res) {
 
 
 
-
+// count how many each name has been greeted
 app.get('/Counter/:person', function(req, res) {
 var name = req.params.person;
   access.storeData.findOne({
     name:name
   }, function(err, results) {
     if (err) {
+      
       return err;
-
     }else {
       console.log(results.name);
       res.render('index.counter.handlebars', {
 
-        names: req.params.person+''+"has been greeted"+''+results.greetingsCount+''+"time(s)"
+        names: req.params.person+""+''+""+"has been greeted"+''+''+''+results.greetingsCount+''+''+''+"time(s)"
       });
 
     }
@@ -190,20 +187,17 @@ var name = req.params.person;
 });
 });
 
+// removing all the names in the database
 
-app.post('/Reset',function(req, res){
+app.get('/Reset',function(req, res){
   access.storeData.remove({},function(err,remove){
     if(err){
       return err;
-    }else{
-      remove.greetingsCount;
     }
-      res.render('index',{
 
-      });
-
-    });
-  });
+      res.redirect('/Greetings');
+  })
+});
 
 
 

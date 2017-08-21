@@ -1,6 +1,7 @@
 <form action="/Greetings" method="post">
 
 <button type='view' name="peopleGreeted" value='greet'>Back</button>
+<p>Names Greeted</p>
 {{#each names}}
 <div class="names">
   <a href="/Counter/{{this.name}}" >{{this.name}}</a>
@@ -9,7 +10,4 @@
 <div id='listOfNames'>
 
 </div>
-
-
-
 </form>
