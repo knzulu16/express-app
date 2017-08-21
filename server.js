@@ -5,8 +5,8 @@ const flash = require('express-flash');
 const session = require("express-session");
 var bodyParser = require('body-parser');
 var app = express();
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+//var mongoose = require('mongoose');
+//var Schema = mongoose.Schema;
 
 // var greetingsCount = 0;
 var namesGreeted = {};
@@ -37,9 +37,6 @@ app.use(flash());
 // parse application/json
 app.use(bodyParser.json())
 
-
-
-
 // storing and increamenting names in the database
 function storing(nameParam, cb) {
 
@@ -47,9 +44,9 @@ function storing(nameParam, cb) {
     name: nameParam
   }, function(err, results) {
     if (err) {
-      req.flash('error','name already exits!');
+      req.flash('error', 'name already exits!');
       return cb(err);
-      res.redirect('index');
+      res.redirect('/Greetings');
     } else if (results) {
       results.greetingsCount = results.greetingsCount + 1;
       results.save(cb);
@@ -65,24 +62,14 @@ function storing(nameParam, cb) {
       console.log("takesNames", takesNames);
 
     }
-
-
-
   })
-
-
 }
 
 
 var greeted = [];
 
-
-
-
-
 app.get('/Greetings', function(req, res) {
   res.render('index');
-
 });
 
 app.get('/Greetings', function(req, res) {
@@ -95,7 +82,13 @@ app.post('/Greetings', function(req, res, next) {
   var language = req.body.language;
   greeted.push(name);
 
+  if(!name){
+    req.flash('error','name should not be blank')
+  }
+  if(language==undefined){
+    req.flash('error','language is not selected')
 
+  }
 
   if (language === 'IsiXhosa') {
     greetNames = 'Molo ' + name
@@ -111,7 +104,7 @@ app.post('/Greetings', function(req, res, next) {
 
   console.log(greetNames);
 
-// calling the function that stores names
+  // calling the function that stores names and pass name
   storing(name, function(err) {
 
     console.log("storing...");
@@ -119,7 +112,7 @@ app.post('/Greetings', function(req, res, next) {
     if (err) {
       return next(err);
     }
-// displays and counts
+    // displays and counts
     access.storeData.count({}, function(err, greetingsCount) {
       console.log("counting...");
       if (err) {
@@ -133,27 +126,18 @@ app.post('/Greetings', function(req, res, next) {
     });
 
   })
-
-
-
-
-
-
 });
 app.get('/Greeted', function(req, res) {
-  // var name = req.body.names;
-// avoid duplication by using find
+
+  // avoid duplication by using find
   access.storeData.find({}, function(err, results) {
     if (err) {
       return err;
-    }
-   else {
+    } else {
       res.render('index.form.handlebars', {
         names: results
       })
     }
-
-
   });
 });
 
@@ -161,51 +145,40 @@ app.get('/Greeted', function(req, res) {
 
 // count how many each name has been greeted
 app.get('/Counter/:person', function(req, res) {
-var name = req.params.person;
+  var name = req.params.person;
   access.storeData.findOne({
-    name:name
+    name: name
   }, function(err, results) {
     if (err) {
 
       return err;
-    }else {
+    } else {
       console.log(results.name);
       res.render('index.counter.handlebars', {
-
-        names: req.params.person+""+''+""+"has been greeted"+''+''+''+results.greetingsCount+''+''+''+"time(s)"
+        names: req.params.person  +"has been greeted" + "" + '' + '' + results.greetingsCount + '' + '' + '' + "time(s)"
       });
-
     }
-
-
-
-});
+  });
 });
 
 // removing all the names in the database
 
-app.get('/Reset',function(req, res){
-  access.storeData.remove({},function(err,remove){
-    if(err){
+app.get('/Reset', function(req, res) {
+  access.storeData.remove({}, function(err, remove) {
+    if (err) {
       return err;
     }
 
-      res.redirect('/Greetings');
+    res.redirect('/Greetings');
   })
 });
-
-
-
-
-
-
 
 app.use(function(err, req, res, next) {
   console.error(err.stack)
   res.status(500).send(err.stack)
 })
+
 const port = process.env.PORT || 8000;
 app.listen(port, function() {
   console.log('web app started on port:' + port);
-
 });
