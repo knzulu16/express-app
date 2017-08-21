@@ -11,7 +11,7 @@ text-align: center;
 margin-top: 3em;
 margin-left:15em;
 color:black;
-font-size: 24px;
+font-size: 16px;
 }
 button{
   color:yellow;
@@ -20,6 +20,7 @@ button{
 .error{
   color:red;
 }
+
 
 #greeted{
     background-color: #000000;

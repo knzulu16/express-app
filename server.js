@@ -19,15 +19,13 @@ app.set('view engine', 'handlebars');
 
 app.use(express.static(__dirname + '/public'));
 
-const mongoURL = process.env.MONGO_DB_URL || "mongodb://localhost/Greetings";
-mongoose.connect(mongoURL);
+//const mongoURL = process.env.MONGO_DB_URL || "mongodb://localhost/Greetings";
+//mongoose.connect(mongoURL);
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
   extended: false
-}))
-
-
+}));
 
 app.use(session({
   secret: 'keyboard cat',
@@ -51,6 +49,7 @@ function storing(nameParam, cb) {
     if (err) {
       req.flash('error','name already exits!');
       return cb(err);
+      res.redirect('index');
     } else if (results) {
       results.greetingsCount = results.greetingsCount + 1;
       results.save(cb);
@@ -96,11 +95,7 @@ app.post('/Greetings', function(req, res, next) {
   var language = req.body.language;
   greeted.push(name);
 
-  if (!name) {
-    req.flash('error', 'name should not be blank');
-  } if (language == undefined) {
-    req.flash('error', 'language is not selected');
-  }
+
 
   if (language === 'IsiXhosa') {
     greetNames = 'Molo ' + name
@@ -171,7 +166,7 @@ var name = req.params.person;
     name:name
   }, function(err, results) {
     if (err) {
-      
+
       return err;
     }else {
       console.log(results.name);

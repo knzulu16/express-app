@@ -1,8 +1,9 @@
 var mongoose=require('mongoose');
 var Schema = mongoose.Schema;
 
-mongoose.connect("mongodb://localhost/Greetings",
-{
+const mongoURL = process.env.MONGO_DB_URL || "mongodb://localhost/Greetings";
+
+mongoose.connect(mongoURL, {
   useMongoClient:true
 });
 
