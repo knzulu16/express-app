@@ -3,6 +3,9 @@ var Schema = mongoose.Schema;
 
 const mongoURL = process.env.MONGO_DB_URL || "mongodb://localhost/Greetings";
 
+console.log("mongoURL");
+console.log(mongoURL);
+
 mongoose.connect(mongoURL, {
   useMongoClient: true
 });

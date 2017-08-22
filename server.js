@@ -5,11 +5,7 @@ const flash = require('express-flash');
 const session = require("express-session");
 var bodyParser = require('body-parser');
 var app = express();
-//var mongoose = require('mongoose');
-//var Schema = mongoose.Schema;
 
-// var greetingsCount = 0;
-var namesGreeted = {};
 var access = require('./mongoose');
 
 app.engine('handlebars', exphbs({
@@ -18,9 +14,6 @@ app.engine('handlebars', exphbs({
 app.set('view engine', 'handlebars');
 
 app.use(express.static(__dirname + '/public'));
-
-//const mongoURL = process.env.MONGO_DB_URL || "mongodb://localhost/Greetings";
-//mongoose.connect(mongoURL);
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
