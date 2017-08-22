@@ -44,9 +44,8 @@ function storing(nameParam, cb) {
     name: nameParam
   }, function(err, results) {
     if (err) {
-      req.flash('error', 'name already exits!');
       return cb(err);
-      res.redirect('/Greetings');
+
     } else if (results) {
       results.greetingsCount = results.greetingsCount + 1;
       results.save(cb);
@@ -155,7 +154,7 @@ app.get('/Counter/:person', function(req, res) {
     } else {
       console.log(results.name);
       res.render('index.counter.handlebars', {
-        names: req.params.person  +"has been greeted" + "" + '' + '' + results.greetingsCount + '' + '' + '' + "time(s)"
+        names: req.params.person + " has been greeted "  + results.greetingsCount  +" time(s)."
       });
     }
   });

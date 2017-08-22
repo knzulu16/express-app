@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -14,7 +15,17 @@
     "express-flash": "git://github.com/RGBboy/express-flash.git",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.5",
+    "heroku": "^0.2.0",
     "mongodb": "^2.2.30",
     "mongoose": "^4.11.5"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knzulu16/express-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/knzulu16/express-app/issues"
+  },
+  "homepage": "https://github.com/knzulu16/express-app#readme"
 }
