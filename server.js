@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({
 app.use(session({
   secret: 'keyboard cat',
   cookie: {
-    maxAge: 60000 * 30
+    maxAge: 60000 * 15
   }
 }));
 app.use(flash());
