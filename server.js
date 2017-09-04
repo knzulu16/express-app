@@ -1,6 +1,6 @@
 "use strict";
 var express = require('express');
-var exphbs = require('express-handlebars');
+var handlebars = require('express-handlebars');
 const flash = require('express-flash');
 const session = require("express-session");
 var bodyParser = require('body-parser');
@@ -8,9 +8,15 @@ var app = express();
 
 var access = require('./mongoose');
 
-app.engine('handlebars', exphbs({
+
+
+app.engine('handlebars', handlebars({
+  extname: 'handlebars',
   defaultLayout: 'main'
 }));
+
+
+
 app.set('view engine', 'handlebars');
 
 app.use(express.static(__dirname + '/public'));
