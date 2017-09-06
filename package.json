@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "cli-update": "^3.2.4",
     "express": "^4.15.3",
     "express-flash": "git://github.com/RGBboy/express-flash.git",
     "express-handlebars": "^3.0.0",
@@ -29,3 +30,6 @@
   },
   "homepage": "https://github.com/knzulu16/express-app#readme"
 }
+"engines": {
+    "node": "4.1.1"
+  }
