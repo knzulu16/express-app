@@ -63,13 +63,14 @@ function storing(nameParam, cb) {
 
 var greeted = [];
 
+app.get('/', function(req,res){
+  res.redirect('/greetings');
+})
+
 app.get('/Greetings', function(req, res) {
   res.render('index');
 });
 
-app.get('/Greetings', function(req, res) {
-  res.redirect('index');
-});
 
 var greetNames = "";
 app.post('/Greetings', function(req, res, next) {
