@@ -14,9 +14,6 @@ app.engine('handlebars', handlebars({
   extname: 'handlebars',
   defaultLayout: 'main'
 }));
-
-
-
 app.set('view engine', 'handlebars');
 
 app.use(express.static(__dirname + '/public'));
