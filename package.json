@@ -2,13 +2,16 @@
   "name": "express-app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
+  "main" : "server.js",
+  "scripts" : {
     "test": "mocha",
     "start": "node server.js"
   },
+
   "author": "",
+
   "license": "ISC",
+
   "dependencies": {
     "body-parser": "^1.17.2",
     "cli-update": "^3.2.4",
@@ -20,16 +23,22 @@
     "mongodb": "^2.2.30",
     "mongoose": "^4.11.5"
   },
+
   "devDependencies": {},
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/knzulu16/express-app.git"
   },
+
   "bugs": {
     "url": "https://github.com/knzulu16/express-app/issues"
   },
-  "homepage": "https://github.com/knzulu16/express-app#readme"
-}
-"engines": {
+
+  "homepage": "https://github.com/knzulu16/express-app#readme",
+
+  "engines": {
     "node": "4.1.1"
   }
+
+}

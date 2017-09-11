@@ -5,7 +5,7 @@ const mongoURL = process.env.MONGO_DB_URL || "mongodb://localhost/Greetings";
 
 console.log("mongoURL");
 console.log(mongoURL);
-mongoose.connection("on", function(err){
+mongoose.connection.on("error", function(err){
   console.log("err");
 })
 mongoose.connect(mongoURL, {
